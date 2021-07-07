@@ -7,30 +7,36 @@ var attack_speed = 30
 
 var end_pos = Vector2.ZERO
 var end_rot = 0
+var rot_elapsed = 0.0
 
 func attack(dir: int):
 	# Setup position
 	match dir:
 		Direction.LEFT:
-			$Pivot.position = Vector2(-2, 0)
-			end_pos = Vector2(-5, 4)
+			$Pivot.position = Vector2(-1, -8)
+			end_pos = Vector2(-6, 4)
 		Direction.RIGHT:
-			$Pivot.position = Vector2(0, 5)
-			end_pos = Vector2(5, 2)
+			$Pivot.position = Vector2(1, -8)
+			end_pos = Vector2(6, 4)
 		Direction.UP:
-			$Pivot.position = Vector2(5, 3)
+			$Pivot.position = Vector2(12, 5)
 			end_pos = Vector2(-3, -5)
 		Direction.DOWN:
-			$Pivot.position = Vector2(-3, 5)
-			end_pos = Vector2(3, 5)
+			$Pivot.position = Vector2(-12, -5)
+			end_pos = Vector2(3, 6)
 	
-	# Setup rotation
-	$Pivot.rotation = deg2rad(dir * 90)
-	end_rot = deg2rad((dir - 1) * 90)
-	
-	# Make visible
-	visible = true
+	# Setup rotation (Special case for right swing)
+	if dir == Direction.RIGHT:
+		$Pivot.rotation = deg2rad(Direction.LEFT * 90)
+		end_rot = deg2rad((Direction.LEFT + 1) * 90)
+	else:
+		$Pivot.rotation = deg2rad(dir * 90)
+		end_rot = deg2rad((dir - 1) * 90)
+	rot_elapsed = 0.0
 
 func _physics_process(delta):
-	$Pivot.rotation = lerp($Pivot.rotation, end_rot, .5)
+	$Pivot.rotation = lerp_angle($Pivot.rotation, end_rot, rot_elapsed)
 	$Pivot.position = lerp($Pivot.position, end_pos, .5)
+	if rot_elapsed <= 1:
+		rot_elapsed += delta * attack_speed / 3
+	

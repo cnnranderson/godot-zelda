@@ -42,6 +42,7 @@ func _check_input():
 		weapon.attack(direction)
 		attack_time = 10
 		is_attacking = true
+		weapon.visible = true
 		$AnimatedSprite.frame = 0
 	if Input.is_action_just_released(Events.Actions.Attack) and is_attacking:
 		is_attacking = false
