@@ -23,31 +23,41 @@ func _check_input():
 	velocity = Vector2.ZERO
 	if Input.is_action_pressed(Events.Actions.MoveLeft):
 		velocity.x = -1
-		$AnimatedSprite.play("walk_left")
 		direction = Direction.LEFT
 	elif Input.is_action_pressed(Events.Actions.MoveRight):
 		velocity.x = 1
-		$AnimatedSprite.play("walk_right")
 		direction = Direction.RIGHT
 	
 	if Input.is_action_pressed(Events.Actions.MoveUp):
 		velocity.y = -1
-		if not $AnimatedSprite.playing or velocity.x == 0:
+		if not is_attacking and (not $AnimatedSprite.playing or velocity.x == 0):
 			direction = Direction.UP
-			$AnimatedSprite.play("walk_up")
 	elif Input.is_action_pressed(Events.Actions.MoveDown):
 		velocity.y = 1
-		if not $AnimatedSprite.playing or velocity.x == 0:
+		if not is_attacking and (not $AnimatedSprite.playing or velocity.x == 0):
 			direction = Direction.DOWN
-			$AnimatedSprite.play("walk_down")
 	velocity = velocity.normalized() * speed
 	
 	if Input.is_action_pressed(Events.Actions.Attack) and not is_attacking:
-		weapon.attack(direction, position)
+		weapon.attack(direction)
 		attack_time = 10
 		is_attacking = true
+		$AnimatedSprite.frame = 0
 	if Input.is_action_just_released(Events.Actions.Attack) and is_attacking:
 		is_attacking = false
+	
+	if is_attacking or attack_time != 0:
+		match direction:
+			Direction.DOWN: $AnimatedSprite.play("attack_down")
+			Direction.UP: $AnimatedSprite.play("attack_up")
+			Direction.LEFT: $AnimatedSprite.play("attack_left")
+			Direction.RIGHT: $AnimatedSprite.play("attack_right")
+	elif velocity != Vector2.ZERO:
+		match direction:
+			Direction.DOWN: $AnimatedSprite.play("walk_down")
+			Direction.UP: $AnimatedSprite.play("walk_up")
+			Direction.LEFT: $AnimatedSprite.play("walk_left")
+			Direction.RIGHT: $AnimatedSprite.play("walk_right")
 
 func _physics_process(delta):
 	_check_input()
@@ -57,8 +67,13 @@ func _physics_process(delta):
 		velocity = Vector2.ZERO
 	elif not is_attacking and attack_time == 0:
 		weapon.visible = false
+		match direction:
+			Direction.DOWN: $AnimatedSprite.play("walk_down")
+			Direction.UP: $AnimatedSprite.play("walk_up")
+			Direction.LEFT: $AnimatedSprite.play("walk_left")
+			Direction.RIGHT: $AnimatedSprite.play("walk_right")
 	if attack_time > 0:
 		attack_time = max(attack_time - (weapon.attack_speed * delta), 0)
 	
-	$AnimatedSprite.playing = (velocity != Vector2.ZERO)
+	$AnimatedSprite.playing = (velocity != Vector2.ZERO or attack_time != 0)
 	velocity = move_and_slide(velocity)

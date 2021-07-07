@@ -8,7 +8,7 @@ var attack_speed = 30
 var end_pos = Vector2.ZERO
 var end_rot = 0
 
-func attack(dir: int, position):
+func attack(dir: int):
 	# Setup position
 	match dir:
 		Direction.LEFT:
