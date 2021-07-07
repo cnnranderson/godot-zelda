@@ -8,4 +8,11 @@ without having to create complex hierarchies within nodes when
 connecting signal subscribers.
 """
 
+const Actions = {
+	"MoveLeft": "ui_left",
+	"MoveRight": "ui_right",
+	"MoveDown": "ui_down",
+	"MoveUp": "ui_up",
+}
+
 signal game_won
