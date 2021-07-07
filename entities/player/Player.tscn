@@ -50,7 +50,7 @@ animations = [ {
 "frames": [ SubResource( 5 ), SubResource( 6 ) ],
 "loop": true,
 "name": "walk_up",
-"speed": 6.0
+"speed": 5.0
 }, {
 "frames": [ SubResource( 7 ), SubResource( 8 ) ],
 "loop": true,
@@ -72,3 +72,5 @@ animation = "walk_down"
 shape = SubResource( 10 )
 
 [node name="LookAheadPivot" type="Position2D" parent="."]
+
+[node name="Weapon" type="Node2D" parent="."]

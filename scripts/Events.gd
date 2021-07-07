@@ -13,6 +13,7 @@ const Actions = {
 	"MoveRight": "ui_right",
 	"MoveDown": "ui_down",
 	"MoveUp": "ui_up",
+	"Attack": "ui_select"
 }
 
 signal game_won
