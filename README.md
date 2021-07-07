@@ -1,5 +1,3 @@
-## Battleship
+## Zelda
 
-This is a version of the classic game Battleship written using the GodotEngine.
-
-This will include multiplayer features, utilizing Firebase's Firestore, to discover how to work with networking. 
+This is a clone of the top-down Gameboy/SNES games of Zelda written in Godot.
