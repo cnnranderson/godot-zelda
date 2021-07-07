@@ -15,17 +15,20 @@ func _check_input():
 	if Input.is_action_pressed(Events.Actions.MoveLeft):
 		velocity.x = -1
 		$AnimatedSprite.play("walk_left")
-	if Input.is_action_pressed(Events.Actions.MoveRight):
+	elif Input.is_action_pressed(Events.Actions.MoveRight):
 		velocity.x = 1
 		$AnimatedSprite.play("walk_right")
 	
 	if Input.is_action_pressed(Events.Actions.MoveUp):
 		velocity.y = -1
-		$AnimatedSprite.play("walk_up")
-	if Input.is_action_pressed(Events.Actions.MoveDown):
+		if not $AnimatedSprite.playing or velocity.x == 0:
+			$AnimatedSprite.play("walk_up")
+	elif Input.is_action_pressed(Events.Actions.MoveDown):
 		velocity.y = 1
-		$AnimatedSprite.play("walk_down")
+		if not $AnimatedSprite.playing or velocity.x == 0:
+			$AnimatedSprite.play("walk_down")
 	velocity = velocity.normalized() * speed
+	$LookAheadPivot.position = velocity / 3
 
 func _physics_process(delta):
 	_check_input()

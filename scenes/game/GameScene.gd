@@ -1,11 +1,18 @@
 extends Node2D
 
+var camera = {
+	'target': Vector2.ZERO,
+	'zoom': 0.5
+}
+
 func _ready():
 	pass
 
-func _process(delta):
+func _physics_process(delta):
+	camera.target = $Player.position + $Player/LookAheadPivot.position
 	_update_camera(delta)
 
 func _update_camera(delta):
-	var look_ahead = $Player.position + $Player.velocity / 2
-	$Camera.position = lerp($Camera.position, look_ahead, 0.05)
+	$Camera.position = camera.target
+	$Camera.zoom = Vector2.ONE * camera.zoom
+	
