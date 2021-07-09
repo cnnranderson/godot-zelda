@@ -2,7 +2,7 @@ extends KinematicBody2D
 
 const Sword = preload("res://entities/weapons/sword/Sword.tscn")
 
-enum Direction {LEFT, UP, RIGHT, DOWN}
+enum Direction { LEFT, UP, RIGHT, DOWN }
 
 var velocity = Vector2.ZERO
 var speed = 60
@@ -10,6 +10,7 @@ var is_attacking = false
 var direction = Direction.DOWN
 var weapon : Weapon
 var attack_time = 0
+var hp = 8
 
 func _ready():
 	_init_equipment()
@@ -78,3 +79,10 @@ func _physics_process(delta):
 	
 	$AnimatedSprite.playing = (velocity != Vector2.ZERO or attack_time != 0)
 	velocity = move_and_slide(velocity)
+
+func hurt(damage):
+	Events.emit_signal("player_hurt", hp, damage)
+
+func _on_Hitbox_area_shape_entered(area_id, area, area_shape, local_shape):
+	if area.name == "Hurtbox":
+		hurt(1)

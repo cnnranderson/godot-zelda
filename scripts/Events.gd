@@ -17,3 +17,5 @@ const Actions = {
 }
 
 signal game_won
+
+signal player_hurt(hp, damage)

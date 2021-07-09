@@ -15,4 +15,3 @@ func _physics_process(delta):
 func _update_camera(delta):
 	$Camera.position = camera.target
 	$Camera.zoom = Vector2.ONE * camera.zoom
-	

@@ -11,6 +11,7 @@ var main : Main = null
 var debug = true
 
 func _ready():
+	randomize()
 	pause_mode = Node.PAUSE_MODE_PROCESS
 
 func _process(_delta):
